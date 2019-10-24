@@ -6,7 +6,6 @@ using Random #pacakge random pour la génération de message
 using DSP
 
 include("../Commun/erreur.jl")
-close("all")
 
 function simul_erreur(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION, NOMBRE_SIMULATIONS) #renvoie le min et le max pour un nombre de simulations donné
     simulations = zeros(NOMBRE_SIMULATIONS,1)

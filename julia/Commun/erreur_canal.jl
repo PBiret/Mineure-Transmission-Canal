@@ -10,7 +10,6 @@ include("../Commun/plot_apres_formant.jl")
 include("../Commun/formantcos.jl")
 include("../Commun/formantrect.jl")
 include("../Commun/bruit.jl")
-close("all")
 
 
 ### Définition de la fonction erreur

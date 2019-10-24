@@ -10,7 +10,6 @@ include("../Commun/plot_apres_formant.jl")
 include("../Commun/formantcos.jl")
 include("../Commun/formantrect.jl")
 include("../Commun/bruit.jl")
-close("all")
 
 function canal(TAILLE_CANAL, SURECHANTILLONNAGE, TEMPS_CHARACTERISTIQUE=1)
     x = collect(0:1:TAILLE_CANAL÷2) # vecteur x

@@ -6,12 +6,9 @@ using Random #pacakge random pour la génération de message
 using DSP
 include("../Commun/emission.jl")
 include("../Commun/reception.jl")
-include("../Commun/plot_apres_formant.jl")
 include("../Commun/formantcos.jl")
 include("../Commun/formantrect.jl")
 include("../Commun/bruit.jl")
-close("all")
-
 
 ### Définition de la fonction erreur
 function erreur(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION)

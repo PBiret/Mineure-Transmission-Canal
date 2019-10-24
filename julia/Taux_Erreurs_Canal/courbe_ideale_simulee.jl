@@ -6,9 +6,8 @@ using PyPlot
 
 include("../Commun/erreurs_minmax.jl")
 include("../Commun/formantcos.jl")
-include("../Commun/erreurs_minmax.jl")
 
-TAILLE = 50; #nombre de points à tracer
+TAILLE = 16; #nombre de points à tracer
 RAPPORT_MIN = 0; #Eb/N0 minimal
 RAPPORT_MAX = 8; #Eb/N0 maximal
 SURECHANTILLONNAGE = 30

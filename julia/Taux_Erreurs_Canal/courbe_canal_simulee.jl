@@ -12,7 +12,6 @@ include("../Commun/formantrect.jl")
 include("../Commun/bruit.jl")
 include("../Commun/erreur_canal.jl")
 include("../Commun/canal.jl")
-close("all")
 
 EBN0 = 5
 TAILLE_MESSAGE = 10000
