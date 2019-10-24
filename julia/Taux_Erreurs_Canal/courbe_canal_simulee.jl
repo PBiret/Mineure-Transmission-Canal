@@ -14,14 +14,13 @@ include("../Commun/erreur_canal.jl")
 include("../Commun/canal.jl")
 close("all")
 
-EBN0 = 3
+EBN0 = 5
 TAILLE_MESSAGE = 10000
-TAILLE_CANAL = 5001
-SURECHANTILLONNAGE = 10
-FORMANT_EMISSION = formantcos(10000,SURECHANTILLONNAGE)
-FILTRE_RECEPTION = formantcos(10000,SURECHANTILLONNAGE)
-canal_entree = zeros(TAILLE_CANAL)
-canal_entree[TAILLE_CANAL÷2 + 1] = 10
+TAILLE_CANAL = 11
+SURECHANTILLONNAGE = 30
+FORMANT_EMISSION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
+FILTRE_RECEPTION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
+canal_entree = canal(TAILLE_CANAL*SURECHANTILLONNAGE+1, SURECHANTILLONNAGE)
 
 TAILLE = 16; #nombre de points à tracer
 RAPPORT_MIN = 0; #Eb/N0 minimal
@@ -46,6 +45,7 @@ for j = 1:length(eb_n0)
         erreur = erreur_canal(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, formant,canal_entree); #récupération de la valeur de l'erreur
         erreur_min = min(erreur_min, erreur)
         erreur_max = max(erreur_max, erreur)
+        
     end
     global taux_binaire_min = [taux_binaire_min;erreur_min];
     global taux_binaire_max= [taux_binaire_max;erreur_max];
@@ -55,7 +55,5 @@ end
 #tracé de la figure
 plot(eb_n0, taux_binaire_min; color="blue");
 plot(eb_n0, taux_binaire_max; color="blue");
-
-
 
 

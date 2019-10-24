@@ -29,24 +29,31 @@ SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
 NB_SIMULATIONS = 20
 
-taux_binaire = []; #initialisation du vecteur d'erreur binaire min
+taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
+taux_binaire_max = []
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
 formant = formantcos(10000,10)
 for j = 1:length(eb_n0)
     erreur = 0
+    erreur_min = 1
+    erreur_max = 0
     print("Eb/N0")
     print(" = ")
     print(eb_n0[j])
     print("\n")
     for i = 1:NB_SIMULATIONS
-        erreur = erreur + erreur_canal(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, formant,canal_entree); #récupération de la valeur moyenne des erreurs
+        erreur = erreur_canal(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, formant,canal_entree); #récupération de la valeur de l'erreur
+        erreur_min = min(erreur_min, erreur)
+        erreur_max = max(erreur_max, erreur)
     end
-    global taux_binaire = [taux_binaire;erreur/NB_SIMULATIONS];
+    global taux_binaire_min = [taux_binaire_min;erreur_min];
+    global taux_binaire_max= [taux_binaire_max;erreur_max];
     
-end
+end 
 
 #tracé de la figure
-plot(eb_n0, taux_binaire; color="blue");
+plot(eb_n0, taux_binaire_min; color="blue");
+plot(eb_n0, taux_binaire_max; color="blue");    
 
 
 
