@@ -18,7 +18,6 @@ TAILLE_MESSAGE = 10000
 TAILLE_CANAL = 11
 SURECHANTILLONNAGE = 30
 FORMANT_EMISSION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
-FILTRE_RECEPTION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
 canal_entree = canal(TAILLE_CANAL*SURECHANTILLONNAGE+1, SURECHANTILLONNAGE)
 
 TAILLE = 16; #nombre de points à tracer
@@ -32,6 +31,7 @@ taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
 formant = formantcos(10000,10)
+filtre = conv(formant, canal_entree);
 for j = 1:length(eb_n0)
     erreur = 0
     erreur_min = 1
@@ -41,7 +41,7 @@ for j = 1:length(eb_n0)
     print(eb_n0[j])
     print("\n")
     for i = 1:NB_SIMULATIONS
-        erreur = erreur_canal(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, formant,canal_entree); #récupération de la valeur de l'erreur
+        erreur = erreur_canal(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, filtre,canal_entree); #récupération de la valeur de l'erreur
         erreur_min = min(erreur_min, erreur)
         erreur_max = max(erreur_max, erreur)
         
@@ -52,7 +52,7 @@ for j = 1:length(eb_n0)
 end
 
 #tracé de la figure
-plot(eb_n0, taux_binaire_min; color="green");
-plot(eb_n0, taux_binaire_max; color="green");
+plot(eb_n0, taux_binaire_min; color="cyan");
+plot(eb_n0, taux_binaire_max; color="cyan");
 
 

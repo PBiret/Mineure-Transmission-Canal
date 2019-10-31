@@ -22,7 +22,7 @@ function erreur_canal(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION
     signal = conv(signal, canal)
     # return(signal)
     signal = signal + bruit(EBN0, (signal'*signal)[1]/TAILLE_MESSAGE, length(signal));
-    filtre = formant[end:-1:1] / (formant'*formant);
+    filtre = FILTRE_RECEPTION[end:-1:1];
     filtre = filtre[1:end,1];
 
     # signal = signal ./ sqrt((canal'*canal)[1]) #ajustement lié au gain du canal
