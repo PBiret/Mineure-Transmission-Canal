@@ -4,7 +4,7 @@
 using PyPlot
 
 
-include("../Commun/erreurs_minmax.jl")
+include("../Taux_Erreurs_Canal/erreurs_minmax.jl")
 include("../Commun/formantcos.jl")
 
 TAILLE = 16; #nombre de points à tracer

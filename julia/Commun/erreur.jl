@@ -21,6 +21,7 @@ function erreur(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILT
     filtre = formant[end:-1:1] / (formant'*formant);
     filtre = filtre[1:end,1];
     recu = reception(signal, filtre, SURECHANTILLONNAGE, 1+TAILLE_FORMANT*SURECHANTILLONNAGE/2);
+    recu = decision.(recu);
     
     return(sum(abs.(recu-message)/2))/TAILLE_MESSAGE
 

@@ -1,6 +1,8 @@
 #author : Pierre Biret
 #derniere modification : 3-oct-2019
 
+using DSP
+
 function emission(message, FORMANT_EMISSION, SURECHANTILLONNAGE)
 
     TAILLE_MESSAGE = length(message)
