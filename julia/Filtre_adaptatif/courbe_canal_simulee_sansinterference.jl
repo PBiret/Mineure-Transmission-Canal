@@ -1,5 +1,5 @@
 #author : Pierre Biret
-#derniere modification : 24-oct-2019
+#derniere modification : 28-nov-2019
 
 using PyPlot
 using Random #package random pour la génération de message
@@ -19,7 +19,7 @@ EBN0 = 5
 TAILLE_CANAL = 11
 SURECHANTILLONNAGE = 30
 TAILLE_FORMANT = 30
-FORMANT_EMISSION = formantcos(TAILLE_FORMANT*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
+FORMANT_EMISSION = formantcos(TAILLE_FORMANT*SURECHANTILLONNAGE+1,SURECHANTILLONNAGE)
 canal_entree = canal(TAILLE_CANAL*SURECHANTILLONNAGE+1, SURECHANTILLONNAGE)
 
 TAILLE = 8; #nombre de points à tracer
@@ -29,44 +29,35 @@ SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
 NB_SIMULATIONS = 10
 
-## définition de la réponse impulsionnelle en fréquence
+## définition de la réponse impulsionnelle du filtre naif
 
-message = zeros(101)
+message = zeros(21)
 message[trunc(Int,(length(message)+1)/2)] = 1
 
 
 formant = FORMANT_EMISSION;
 
-filtre = formant[end:-1:1];
-TAILLE_FORMANT = length(formant)
-
+filtre = conv(formant, canal_entree)[end:-1:1];
 TAILLE_FORMANT = length(FORMANT_EMISSION)
+
 signal = emission(message, formant, SURECHANTILLONNAGE);
 signal_recu = conv(signal, canal_entree)
 signal_recu = conv(signal_recu, filtre)
 
+signal_recu = synchronisation(signal_recu, 1+length(filtre)/2, filtre, SURECHANTILLONNAGE)
 
-# println(length(signal_emis))
-
-signal_recu = synchronisation(signal_recu, 1+TAILLE_CANAL*SURECHANTILLONNAGE/2+TAILLE_FORMANT/2, filtre, SURECHANTILLONNAGE)
-
-
-# println(length(signal_recu))
-
+# plot(signal_recu)
 
 interferences_frequences = fft(signal_recu)
 
+
 interferences_frequences_inverse = 1 ./ interferences_frequences
 
-interferences_inverse = real.(ifft(interferences_frequences_inverse))
 
-# figure()
-# plot(conv(interferences_inverse, signal_recu))
+interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0]
 
 
 
-filtre = formant[end:-1:1];
-# filtre = conv(filtre,interferences_inverse)[end:-1:1]
 
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
