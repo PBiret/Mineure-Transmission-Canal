@@ -1,5 +1,5 @@
 #author : Pierre Biret
-#derniere modification : 24-oct-2019
+#derniere modification : 28-nov-2019
 
 using PyPlot
 using Random #package random pour la génération de message
@@ -25,14 +25,15 @@ RAPPORT_MIN = 0; #Eb/N0 minimal
 RAPPORT_MAX = 8; #Eb/N0 maximal
 SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
-NB_SIMULATIONS = 5
+NB_SIMULATIONS = 10
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
-formant = formantcos(10000,10)
+formant = FORMANT_EMISSION;
 filtre = conv(formant, canal_entree);
-filtre = formant[end:-1:1]
+filtre = filtre[end:-1:1]
+
 for j = 1:length(eb_n0)
     erreur = 0
     erreur_min = 1

@@ -10,11 +10,6 @@ include("../Commun/erreur.jl")
 function simul_erreur(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION, NOMBRE_SIMULATIONS) #renvoie le min et le max pour un nombre de simulations donné
     simulations = zeros(NOMBRE_SIMULATIONS,1)
     for i = 1:NOMBRE_SIMULATIONS
-        print("Simulation ")
-        print(i)
-        print(" sur ")
-        print(NOMBRE_SIMULATIONS)
-        print("\n")
         simulations[i] = erreur(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION)
     end
     # print(simulations)

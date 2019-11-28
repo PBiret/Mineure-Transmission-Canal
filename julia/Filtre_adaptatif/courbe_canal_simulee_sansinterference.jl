@@ -85,7 +85,7 @@ end
 
 #tracé de la figure
 # figure()
-plot(eb_n0, taux_binaire_min; color="green");
-plot(eb_n0, taux_binaire_max; color="green");
+plot(eb_n0, taux_binaire_min; color="black");
+plot(eb_n0, taux_binaire_max; color="black");
 
 

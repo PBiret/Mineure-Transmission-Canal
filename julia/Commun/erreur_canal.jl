@@ -23,11 +23,12 @@ function erreur_canal(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION
     signal = conv(signal, canal)
     # return(signal)
     signal = signal + bruit(EBN0, (signal'*signal)[1]/TAILLE_MESSAGE, length(signal));
-    filtre = FILTRE_RECEPTION[end:-1:1];
+    filtre = FILTRE_RECEPTION;
+    signal = conv(signal, filtre)
 
     # signal = signal ./ sqrt((canal'*canal)[1]) #ajustement lié au gain du canal
     
-    recu = synchronisation(signal, 1+TAILLE_CANAL*SURECHANTILLONNAGE/2, filtre, SURECHANTILLONNAGE);   
+    recu = synchronisation(signal, 1+TAILLE_CANAL*SURECHANTILLONNAGE/2+TAILLE_FORMANT/2, filtre, SURECHANTILLONNAGE);
 
     recu = decision.(recu)
     

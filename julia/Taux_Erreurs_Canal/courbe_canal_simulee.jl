@@ -21,17 +21,17 @@ FORMANT_EMISSION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
 FILTRE_RECEPTION = formantcos(30*SURECHANTILLONNAGE,SURECHANTILLONNAGE)
 canal_entree = canal(TAILLE_CANAL*SURECHANTILLONNAGE+1, SURECHANTILLONNAGE)
 
-TAILLE = 16; #nombre de points à tracer
+TAILLE = 8; #nombre de points à tracer
 RAPPORT_MIN = 0; #Eb/N0 minimal
 RAPPORT_MAX = 8; #Eb/N0 maximal
 SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
-NB_SIMULATIONS = 20
+NB_SIMULATIONS = 10
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
-formant = formantcos(10000,10)
+formant = FORMANT_EMISSION
 for j = 1:length(eb_n0)
     erreur = 0
     erreur_min = 1

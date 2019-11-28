@@ -7,12 +7,12 @@ using PyPlot
 include("../Taux_Erreurs_Canal/erreurs_minmax.jl")
 include("../Commun/formantcos.jl")
 
-TAILLE = 16; #nombre de points à tracer
+TAILLE = 8; #nombre de points à tracer
 RAPPORT_MIN = 0; #Eb/N0 minimal
 RAPPORT_MAX = 8; #Eb/N0 maximal
 SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
-NB_SIMULATIONS = 20
+NB_SIMULATIONS = 5
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []; #initialisation du vecteur d'erreur binaire max
