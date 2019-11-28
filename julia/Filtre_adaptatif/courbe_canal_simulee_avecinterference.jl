@@ -52,7 +52,7 @@ signal_recu = synchronisation(signal_recu, 1+length(filtre)/2, filtre, SURECHANT
 
 interferences_frequences = fft(signal_recu)
 
-
+#calcul de l'énergie totale poru l'appliquer sur le terme additif
 Ef = (filtre'*filtre)/SURECHANTILLONNAGE
 
 
@@ -72,7 +72,7 @@ for j = 1:length(eb_n0)
     #calcul du nouveau filtre
     terme_supp = (Ef/(10^(eb_n0[j]/10))) / 2;
     interferences_frequences_inverse = 1 ./ (terme_supp .+ interferences_frequences)
-    interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0]
+    interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0] #Le décalage est inexpliqué
 
     for i = 1:NB_SIMULATIONS
 
