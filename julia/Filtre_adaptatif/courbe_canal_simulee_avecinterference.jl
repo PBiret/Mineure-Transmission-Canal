@@ -52,12 +52,13 @@ signal_recu = synchronisation(signal_recu, 1+length(filtre)/2, filtre, SURECHANT
 
 interferences_frequences = fft(signal_recu)
 
-#calcul de l'énergie totale poru l'appliquer sur le terme additif
-Ef = (filtre'*filtre)/SURECHANTILLONNAGE
+#calcul de l'énergie totale pour l'appliquer sur le terme additif
+Ef = (filtre'*filtre)/(TAILLE_MESSAGE)
 
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []
+
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
 
 for j = 1:length(eb_n0)
@@ -70,10 +71,10 @@ for j = 1:length(eb_n0)
     print("\n")
 
     #calcul du nouveau filtre
-    terme_supp = (Ef/(10^(eb_n0[j]/10))) / 2;
+    N0 = Ef/(10^(eb_n0[j]/10))
+    terme_supp = N0 / (2 * SURECHANTILLONNAGE); #Calcul du nouveau terme additif dans le filtre pour chaque valeur de Eb/N0
     interferences_frequences_inverse = 1 ./ (terme_supp .+ interferences_frequences)
     interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0] #Le décalage est inexpliqué
-
     for i = 1:NB_SIMULATIONS
 
         erreur = erreur_canal_adaptatif(eb_n0[j], TAILLE_MESSAGE, SURECHANTILLONNAGE, formant, filtre ,canal_entree,interferences_inverse); #récupération de la valeur de l'erreur
