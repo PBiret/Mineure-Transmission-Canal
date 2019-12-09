@@ -54,7 +54,9 @@ interferences_frequences = fft(signal_recu)
 interferences_frequences_inverse = 1 ./ interferences_frequences
 
 
+
 interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0] #Le décalage fait pas julia est inexpliqué
+
 
 taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
 taux_binaire_max = []
@@ -83,5 +85,3 @@ end
 # figure()
 plot(eb_n0, taux_binaire_min; color="black");
 plot(eb_n0, taux_binaire_max; color="black");
-
-
