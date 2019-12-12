@@ -1,4 +1,4 @@
-#author : Pierre Biret
+#author : Pierre Biret, Nicolas Georgin
 #derniere modification : 10-oct-2019
 
 function decision(x)

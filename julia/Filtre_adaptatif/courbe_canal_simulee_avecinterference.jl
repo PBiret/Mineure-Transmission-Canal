@@ -1,4 +1,4 @@
-#author : Pierre Biret
+#author : Pierre Biret, Nicolas Georgin
 #derniere modification : 28-nov-2019
 
 using PyPlot
@@ -56,15 +56,17 @@ interferences_frequences = fft(signal_recu)
 Ef = (filtre'*filtre)/(TAILLE_MESSAGE)
 
 
-taux_binaire_min = []; #initialisation du vecteur d'erreur binaire min
-taux_binaire_max = []
-
 eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
 
-for j = 1:length(eb_n0)
+Nbpt = length(eb_n0);
+
+global taux_binaire_min = zeros(Nbpt);
+global taux_binaire_max = zeros(Nbpt);
+
+Threads.@threads for j = 1:Nbpt
     erreur = 0
-    global erreur_min = 1
-    global erreur_max = 0
+    erreur_min = 1
+    erreur_max = 0
     print("Eb/N0")
     print(" = ")
     print(eb_n0[j])
@@ -82,9 +84,8 @@ for j = 1:length(eb_n0)
         erreur_max = max(erreur_max, erreur)
         
     end
-    global taux_binaire_min = [taux_binaire_min;erreur_min];
-    global taux_binaire_max= [taux_binaire_max;erreur_max];
-    
+    taux_binaire_min[j] = erreur_min;
+    taux_binaire_max[j] = erreur_max;
 end
 
 #tracé de la figure

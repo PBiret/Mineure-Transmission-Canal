@@ -1,4 +1,4 @@
-#author : Pierre Biret
+#author : Pierre Biret, Nicolas Georgin
 #derniere modification : 26-sept-2019
 
 function formantcos(TAILLE, SURECHANTILLONNAGE)
