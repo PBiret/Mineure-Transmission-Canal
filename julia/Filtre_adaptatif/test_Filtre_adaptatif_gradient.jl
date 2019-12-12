@@ -1,3 +1,6 @@
+#author : Pierre Biret, Nicolas Georgin
+#derniere modification : 12-dec-2019
+
 
 using DSP
 using PyPlot
