@@ -15,12 +15,11 @@ function adaptatif_gradient_init(taille, mu)::Filtre_gradient
 	return filtre;
 end
 
-
 function adaptatif_gradient(x, y, filtre)::Float64
 	filtre.X = [filtre.X[2:end]; x];
-	filtre.Y = [filtre.X[2:end]; y];
+	filtre.Y = [filtre.Y[2:end]; x];
 	err = filtre.H' * filtre.X - filtre.Y[1];
-	filtre.H = filtre.H - filtre.mu * filtre.X * err;
+	filtre.H -=  filtre.mu * filtre.X * err;
 	return err;
 end
 

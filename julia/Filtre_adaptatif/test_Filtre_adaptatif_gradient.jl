@@ -10,23 +10,22 @@ include("../Filtre_adaptatif/adaptatif_gradient.jl")
 function test_gradient(TAILLE_FILTRE, TAILLE_SIGNAL, mu, filtre)
 
 	#Generation d'un signal aléatoire
-	signal = randn(TAILLE_SIGNAL);
 
+	signal = randn(TAILLE_SIGNAL);
 	
 	signal_filtre = conv(signal ,filtre);
+
 	signal_filtre = signal_filtre[Int32(floor(length(filtre)/2)+1):end]
 	filtre_gradient = adaptatif_gradient_init(TAILLE_FILTRE,mu);
-	convergence = [];
+	convergence = zeros(TAILLE_SIGNAL);
 	
 	for i = 1:TAILLE_SIGNAL
 		err = adaptatif_gradient(signal[i], signal_filtre[i], filtre_gradient);
-		convergence = [convergence; err];
+		convergence[i] = err;
 	end
 	print("Filtre : ", filtre_gradient.H, "\n");
 
 	return convergence;
-		
-	
 
 end
 

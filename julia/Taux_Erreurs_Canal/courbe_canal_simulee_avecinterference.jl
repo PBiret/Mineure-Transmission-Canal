@@ -15,42 +15,41 @@ include("../Commun/bruit.jl")
 include("../Commun/erreur_canal.jl")
 include("../Commun/canal.jl")
 
-EBN0 = 5
 TAILLE_CANAL = 11
 SURECHANTILLONNAGE = 30
 TAILLE_FORMANT = 30
 FORMANT_EMISSION = formantcos(TAILLE_FORMANT*SURECHANTILLONNAGE+1,SURECHANTILLONNAGE)
 canal_entree = canal(TAILLE_CANAL*SURECHANTILLONNAGE+1, SURECHANTILLONNAGE)
 
-TAILLE = 8; #nombre de points à tracer
+TAILLE = 20	; #nombre de points à tracer
 RAPPORT_MIN = 0; #Eb/N0 minimal
 RAPPORT_MAX = 8; #Eb/N0 maximal
-SURECHANTILLONNAGE = 30
 TAILLE_MESSAGE = 10000
-NB_SIMULATIONS = 100
-
-
+NB_SIMULATIONS = 10
 
 ## définition de la réponse impulsionnelle du filtre naif
 
-message = zeros(21)
-message[trunc(Int,(length(message)+1)/2)] = 1
+Length_mess = 21;
+
+
+message = zeros(Length_mess);
+message[Int((Length_mess+1)/2)] = 1;
 
 
 formant = FORMANT_EMISSION;
 
 filtre = conv(formant, canal_entree)[end:-1:1];
-TAILLE_FORMANT = length(FORMANT_EMISSION)
+TAILLE_FORMANT = length(FORMANT_EMISSION);
 
 signal = emission(message, formant, SURECHANTILLONNAGE);
-signal_recu = conv(signal, canal_entree)
-signal_recu = conv(signal_recu, filtre)
+signal_recu = conv(signal, canal_entree);
+signal_recu = conv(signal_recu, filtre);
 
-signal_recu = synchronisation(signal_recu, 1+length(filtre)/2, filtre, SURECHANTILLONNAGE)
+signal_recu = synchronisation(signal_recu, 1+length(filtre)/2, filtre, SURECHANTILLONNAGE);
 
 # plot(signal_recu)
 
-interferences_frequences = fft(signal_recu)
+interferences_frequences = fft(signal_recu);
 
 #calcul de l'énergie totale pour l'appliquer sur le terme additif 
 Eb = (filtre'*filtre)/(TAILLE_MESSAGE);
@@ -61,22 +60,21 @@ eb_n0 = collect(RAPPORT_MIN:(RAPPORT_MAX - RAPPORT_MIN)/TAILLE:RAPPORT_MAX);
 
 Nbpt = length(eb_n0);
 
-global taux_binaire_min = zeros(Nbpt);
-global taux_binaire_max = zeros(Nbpt);
+taux_binaire_min = zeros(Nbpt);
+taux_binaire_max = zeros(Nbpt);
 
-for j = 1:Nbpt
-    erreur = 0
-    erreur_min = 1
-    erreur_max = 0
-    print("Eb/N0")
-    print(" = ")
-    print(eb_n0[j])
-    print("\n")
+Threads.@threads for j = 1:Nbpt
+
+    erreur_min = 1;
+    erreur_max = 0;
+
+    print("Eb/N0 = ", eb_n0[j], " \n")
 
     #calcul du nouveau filtre
-    N0 = Ef/(10^(eb_n0[j]/10))
+    N0 = Eb/(10^(eb_n0[j]/10));
     terme_supp = N0 / 2; #Calcul du nouveau terme additif dans le filtre pour chaque valeur de Eb/N0
-    interferences_frequences_inverse = 1 ./ (terme_supp .+ interferences_frequences)
+    interferences_frequences1 =   terme_supp .+ interferences_frequences;
+    interferences_frequences_inverse = 1 ./ (interferences_frequences1)
     interferences_inverse = [real.(ifft(interferences_frequences_inverse))[2:end];0] #Le décalage est inexpliqué
     for i = 1:NB_SIMULATIONS
 
