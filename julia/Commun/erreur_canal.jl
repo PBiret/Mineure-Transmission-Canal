@@ -38,46 +38,36 @@ function erreur_canal(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION
     
 end
 
-function erreur_canal_adaptatif(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION, canal_entree, interferences_inverse)
+function erreur_canal_inter(EBN0, TAILLE_MESSAGE, SURECHANTILLONNAGE, FORMANT_EMISSION, FILTRE_RECEPTION, canal_entree, interferences_inverse)
 
     message = 2 .* bitrand(TAILLE_MESSAGE).-1;
-    TAILLE_FORMANT = length(FORMANT_EMISSION)
+    TAILLE_FORMANT = length(FORMANT_EMISSION);
     TAILLE_CANAL = Int((length(canal_entree) - 1) / SURECHANTILLONNAGE);
     formant = FORMANT_EMISSION;
-    filtre = FILTRE_RECEPTION
+    filtre = FILTRE_RECEPTION;
 
     signal = emission(message, formant, SURECHANTILLONNAGE);
-    signal = conv(signal, canal_entree)
+    signal = conv(signal, canal_entree);
 
-    EB = (signal'*signal)/(TAILLE_MESSAGE)
+    EB = (signal'*signal)/(TAILLE_MESSAGE);
+
     # return(signal)
     signal = signal .+ bruit(EBN0, EB, length(signal));
 
     # signal = signal ./ sqrt((canal'*canal)[1]) #ajustement lié au gain du canal
     
     recu = conv(signal, filtre)
-
     recu = synchronisation(recu, 1+length(filtre)/2, filtre, SURECHANTILLONNAGE);
-    
-    recu = conv(recu,interferences_inverse)
+    recu = conv(recu,interferences_inverse);
 
-    temp_synchro = (length(interferences_inverse)+1)/2
+    temp_synchro = (length(interferences_inverse)+1)/2;
+
     if (temp_synchro%1) == 0.5
 	temp_synchro = (SYNCHRONISATION + (length(FILTRE_RECEPTION)-1)/2) + 0.5;
     end
     temp_synchro = Int(temp_synchro);
-    # temps_synchro=1
 
-    recu = recu[temp_synchro:1:end-temp_synchro+1]
-    
-    #recu = recu[temp_synchro-1:1:end-temp_synchro+1]
-
+    recu = recu[temp_synchro:1:end-temp_synchro+1]  
     recu = decision.(recu)
-
-    
-    
-    return(sum(abs.(recu-message)/2))/TAILLE_MESSAGE
-
-
-    
+    return(sum(abs.(recu-message)/2))/TAILLE_MESSAGE  
 end

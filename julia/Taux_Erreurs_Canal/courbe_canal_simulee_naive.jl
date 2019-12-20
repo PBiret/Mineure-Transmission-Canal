@@ -13,8 +13,6 @@ include("../Commun/bruit.jl")
 include("../Commun/erreur_canal.jl")
 include("../Commun/canal.jl")
 
-println(Threads.nthreads());
-
 
 TAILLE_CANAL = 11
 SURECHANTILLONNAGE = 30
@@ -42,10 +40,8 @@ global taux_binaire_max = zeros(Nbpt);
 
 
 Threads.@threads for j = 1:Nbpt
-
     erreur_min = 1;
     erreur_max = 0;
-
     print("Eb/N0 = ", eb_n0[j], " \n")
 
     for i = 1:NB_SIMULATIONS
@@ -62,5 +58,3 @@ end
 #tracé de la figure
 plot(eb_n0, taux_binaire_min; color="cyan");
 plot(eb_n0, taux_binaire_max; color="cyan");
-
-
